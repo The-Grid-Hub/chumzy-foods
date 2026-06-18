@@ -22,11 +22,13 @@ import { requireAuth } from './middleware/requireAuth.js'
 
 const app = new Hono()
 
+// Normalize away any trailing slash — browsers send the Origin header without
+// one, so an env value like `https://example.com/` would never match.
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   process.env.ADMIN_URL || 'http://localhost:3002',
   process.env.FRONTEND_URL_DEV || 'http://localhost:3001',
-]
+].map(origin => origin.replace(/\/$/, ''))
 
 const isLocalhostOrigin = (origin: string) =>
   /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
