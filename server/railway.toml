@@ -1,6 +1,9 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm ci && npm run build"
+# Dependencies install in the Nixpacks install phase (auto-detected from
+# package-lock.json). Do not run `npm ci` here — the build phase mounts a cache
+# at node_modules/.cache, and `npm ci` wiping node_modules collides with it (EBUSY).
+buildCommand = "npm run build"
 
 [deploy]
 # Applies pending Drizzle migrations from ./drizzle before the new version
