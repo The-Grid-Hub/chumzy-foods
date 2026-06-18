@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-green: #1A5C2A;
+  --brand-amber: #D97706;
+  --brand-cream: #FFFBF5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #F5F5F4;
+  color: #1C1917;
+  font-family: system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .content-wrap {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-green {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-green text-white font-semibold px-5 py-2.5 rounded-lg
+           transition-all duration-200 hover:bg-brand-green-dark active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-brand-green focus:ring-offset-2
+           disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-amber {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-amber text-white font-semibold px-5 py-2.5 rounded-lg
+           transition-all duration-200 hover:bg-amber-600 active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-brand-amber focus:ring-offset-2
+           disabled:opacity-60 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-brand-green text-brand-green font-semibold px-5 py-2.5 rounded-lg
+           transition-all duration-200 hover:bg-brand-green hover:text-white active:scale-95;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 border border-red-200 text-brand-red font-semibold px-4 py-2 rounded-lg
+           transition-all duration-200 hover:bg-red-50 active:scale-95;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 border border-stone-200 text-brand-dark font-medium px-4 py-2 rounded-lg
+           transition-all duration-200 hover:bg-stone-50 active:scale-95;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-stone-100;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2.5 rounded-lg border border-stone-200 bg-white
+           focus:outline-none focus:ring-2 focus:ring-brand-green focus:border-transparent
+           text-brand-dark placeholder-brand-muted transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-brand-dark mb-1.5;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full;
+  }
+}

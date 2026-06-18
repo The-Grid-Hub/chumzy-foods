@@ -1,0 +1,33 @@
+{
+  "name": "chumzy-server",
+  "version": "1.0.0",
+  "description": "Chumzy Raw Foods Server",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:seed": "tsx src/db/seed.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.0.1",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.17",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^0.31.10",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
