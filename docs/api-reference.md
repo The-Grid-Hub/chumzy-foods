@@ -226,6 +226,17 @@ Exchange admin email + password for a JWT. Public. Credentials are verified agai
   **404** if not found; **409** on duplicate `slug`.
 - `DELETE /:id` — delete. **404** if not found; **409** if referenced by an order.
 
+### Image Upload — `/api/admin/upload`
+- `POST /` — upload a product image to Cloudinary. **`multipart/form-data`** with a
+  single `file` field (an image, max **5 MB**). Returns the hosted URL to store as a
+  product's `imageUrl`:
+```json
+{ "url": "https://res.cloudinary.com/.../image.jpg", "publicId": "chumzy/products/abc123" }
+```
+  **400** if the file is missing, not an image, or over 5 MB; **500** if the upload to
+  Cloudinary fails. Requires `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` /
+  `CLOUDINARY_API_SECRET` (+ optional `CLOUDINARY_UPLOAD_FOLDER`) to be configured.
+
 ### Orders — `/api/admin/orders`
 - `GET /` — list orders newest first; optional `?status=<order_status>` filter.
 - `GET /:id` — order plus its `items`.

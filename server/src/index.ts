@@ -17,6 +17,7 @@ import adminReviewsRouter from './routes/admin/reviews.js'
 import adminBulkOrdersRouter from './routes/admin/bulk-orders.js'
 import adminContactRouter from './routes/admin/contact.js'
 import adminStatsRouter from './routes/admin/stats.js'
+import adminUploadRouter from './routes/admin/upload.js'
 import { requireAuth } from './middleware/requireAuth.js'
 
 const app = new Hono()
@@ -24,6 +25,7 @@ const app = new Hono()
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   process.env.ADMIN_URL || 'http://localhost:3002',
+  process.env.FRONTEND_URL_DEV || 'http://localhost:3001',
 ]
 
 const isLocalhostOrigin = (origin: string) =>
@@ -62,6 +64,7 @@ app.route('/api/admin/reviews', adminReviewsRouter)
 app.route('/api/admin/bulk-orders', adminBulkOrdersRouter)
 app.route('/api/admin/contact', adminContactRouter)
 app.route('/api/admin/stats', adminStatsRouter)
+app.route('/api/admin/upload', adminUploadRouter)
 
 const port = parseInt(process.env.PORT || '3001')
 

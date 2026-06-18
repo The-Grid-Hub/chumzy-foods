@@ -41,7 +41,40 @@ export async function apiFetch<T>(path: string, options: ApiOptions = {}): Promi
     body: body !== undefined ? JSON.stringify(body) : undefined,
   })
 
-  if (res.status === 401 && auth) {
+  if (auth) handleUnauthorized(res)
+
+  return parseResponse<T>(res)
+}
+
+/**
+ * Upload a single image file to the admin upload endpoint. Sends multipart
+ * form-data (no manual Content-Type so the browser sets the boundary) with the
+ * Bearer token, and reuses the same 401 / ApiError handling as apiFetch.
+ */
+export async function uploadFile(
+  file: File
+): Promise<{ url: string; publicId: string }> {
+  const headers: Record<string, string> = {}
+  const token = getToken()
+  if (token) headers['Authorization'] = `Bearer ${token}`
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const res = await fetch(`${API_BASE}/api/admin/upload`, {
+    method: 'POST',
+    headers,
+    body: formData,
+  })
+
+  handleUnauthorized(res)
+
+  return parseResponse<{ url: string; publicId: string }>(res)
+}
+
+/** Clear the session and redirect to /login on a 401 from an authed request. */
+function handleUnauthorized(res: Response): void {
+  if (res.status === 401) {
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem(TOKEN_KEY)
       if (window.location.pathname !== '/login') {
@@ -50,7 +83,10 @@ export async function apiFetch<T>(path: string, options: ApiOptions = {}): Promi
     }
     throw new ApiError('Session expired. Please log in again.', 401)
   }
+}
 
+/** Parse a JSON response, surfacing server `{ error }` messages as ApiError. */
+async function parseResponse<T>(res: Response): Promise<T> {
   let data: unknown = null
   const text = await res.text()
   if (text) {

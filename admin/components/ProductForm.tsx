@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { apiFetch, ApiError } from '@/lib/api'
+import { apiFetch, uploadFile, ApiError } from '@/lib/api'
 import { PRODUCT_CATEGORIES } from '@/lib/constants'
 import type { Product, ProductInput } from '@/lib/types'
 
@@ -38,6 +38,7 @@ export default function ProductForm({ product }: ProductFormProps) {
   })
   const [slugTouched, setSlugTouched] = useState(isEdit)
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
 
   function set<K extends keyof ProductInput>(key: K, value: ProductInput[K]) {
@@ -47,6 +48,22 @@ export default function ProductForm({ product }: ProductFormProps) {
   function onNameChange(value: string) {
     set('name', value)
     if (!slugTouched) set('slug', slugify(value))
+  }
+
+  async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setError('')
+    setUploading(true)
+    try {
+      const { url } = await uploadFile(file)
+      set('imageUrl', url)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Image upload failed.')
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -185,13 +202,37 @@ export default function ProductForm({ product }: ProductFormProps) {
         </div>
       </div>
 
-      <div>
-        <label className="label">Image URL</label>
+      <div className="space-y-3">
+        <label className="label">Product image</label>
+        <div className="flex items-start gap-4">
+          {form.imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={form.imageUrl}
+              alt="Product preview"
+              className="h-20 w-20 rounded-lg object-cover border border-gray-200"
+            />
+          ) : (
+            <div className="h-20 w-20 rounded-lg border border-dashed border-gray-300 flex items-center justify-center text-xs text-brand-muted">
+              No image
+            </div>
+          )}
+          <div className="space-y-2">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              disabled={uploading}
+              className="text-sm text-brand-dark file:mr-3 file:rounded-lg file:border-0 file:bg-brand-green/10 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-green hover:file:bg-brand-green/20 file:cursor-pointer disabled:opacity-50"
+            />
+            {uploading && <p className="text-xs text-brand-muted">Uploading…</p>}
+          </div>
+        </div>
         <input
           className="input-field"
           value={form.imageUrl ?? ''}
           onChange={e => set('imageUrl', e.target.value)}
-          placeholder="https://…"
+          placeholder="…or paste an image URL"
         />
       </div>
 
@@ -217,7 +258,7 @@ export default function ProductForm({ product }: ProductFormProps) {
       </div>
 
       <div className="flex gap-3 pt-2">
-        <button type="submit" className="btn-green" disabled={saving}>
+        <button type="submit" className="btn-green" disabled={saving || uploading}>
           {saving ? 'Saving…' : isEdit ? 'Save changes' : 'Create product'}
         </button>
         <button
