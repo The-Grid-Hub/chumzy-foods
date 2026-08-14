@@ -3,82 +3,65 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useCart } from '@/lib/cart-context'
-import { CURRENCIES, API_BASE, WHATSAPP_NUMBER } from '@/lib/constants'
-import type { CurrencyCode } from '@/lib/constants'
+import { WHATSAPP_NUMBER } from '@/lib/constants'
 
-function buildWhatsAppMessage(items: ReturnType<typeof useCart>['items'], currency: string, total: string): string {
-  const currInfo = CURRENCIES.find(c => c.code === currency)!
-  const lines = items.map(item => {
-    const price = currency === 'NGN' ? item.product.priceNgn : currency === 'GBP' ? item.product.priceGbp : item.product.priceUsd
-    return `• ${item.product.name} x${item.quantity} (${currInfo.symbol}${parseFloat(price || '0').toLocaleString()} each)`
-  })
+interface CheckoutForm {
+  name: string
+  email: string
+  phone: string
+  country: string
+  address: string
+  paymentMethod: string
+}
+
+const PAYMENT_LABELS: Record<string, string> = {
+  bank_transfer: 'Bank Transfer',
+  cash: 'Cash on Delivery',
+  stripe: 'Card (Stripe)',
+  paypal: 'PayPal',
+}
+
+function buildWhatsAppUrl(
+  items: ReturnType<typeof useCart>['items'],
+  delivery?: CheckoutForm,
+): string {
+  const lines = items.map(item => `• ${item.product.name} x${item.quantity}`)
   const msg = [
     'Hello Chumzy! 👋 I would like to place an order:',
     '',
     ...lines,
+    ...(delivery
+      ? [
+          '',
+          'Delivery details:',
+          `Name: ${delivery.name}`,
+          `Email: ${delivery.email}`,
+          `Phone: ${delivery.phone}`,
+          `Country: ${delivery.country}`,
+          `Address: ${delivery.address}`,
+          `Payment: ${PAYMENT_LABELS[delivery.paymentMethod] ?? delivery.paymentMethod}`,
+        ]
+      : []),
     '',
-    `Total: ${currInfo.symbol}${parseFloat(total).toLocaleString()} (${currency})`,
-    '',
-    'Please confirm availability and delivery details. Thank you!',
+    'Please confirm availability, pricing, and delivery details. Thank you!',
   ].join('\n')
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`
 }
 
 export default function CartPage() {
-  const { items, currency, setCurrency, updateQty, removeItem, totalPrice, clearCart } = useCart()
-  const [checkoutForm, setCheckoutForm] = useState({ name: '', email: '', phone: '', country: '', address: '', paymentMethod: 'bank_transfer' })
-  const [submitting, setSubmitting] = useState(false)
-  const [orderPlaced, setOrderPlaced] = useState<number | null>(null)
+  const { items, updateQty, removeItem } = useCart()
+  const [checkoutForm, setCheckoutForm] = useState<CheckoutForm>({
+    name: '',
+    email: '',
+    phone: '',
+    country: '',
+    address: '',
+    paymentMethod: 'bank_transfer',
+  })
 
-  const currInfo = CURRENCIES.find(c => c.code === currency)!
-
-  const getPrice = (product: ReturnType<typeof useCart>['items'][0]['product']) => {
-    const p = currency === 'NGN' ? product.priceNgn : currency === 'GBP' ? product.priceGbp : product.priceUsd
-    return parseFloat(p || '0')
-  }
-
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitting(true)
-    try {
-      const res = await fetch(`${API_BASE}/api/orders`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          customer: checkoutForm,
-          items: items.map(i => ({
-            productId: i.product.id,
-            productName: i.product.name,
-            quantity: i.quantity,
-            unitPrice: getPrice(i.product).toFixed(2),
-            currency,
-          })),
-          paymentMethod: checkoutForm.paymentMethod,
-        }),
-      })
-      const data = await res.json()
-      setOrderPlaced(data.orderId)
-      clearCart()
-    } catch {
-      alert('Could not place order. Please order via WhatsApp.')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  if (orderPlaced) {
-    return (
-      <main className="min-h-screen bg-brand-cream py-20">
-        <div className="content-wrap max-w-lg mx-auto text-center">
-          <div className="text-6xl mb-6">🎉</div>
-          <h1 className="text-3xl font-bold text-brand-dark mb-4">Order #{orderPlaced} Placed!</h1>
-          <p className="text-brand-muted mb-8">
-            Thank you for your order! We will contact you via WhatsApp or email to confirm delivery details and payment.
-          </p>
-          <Link href="/" className="btn-green">Continue Shopping</Link>
-        </div>
-      </main>
-    )
+    window.open(buildWhatsAppUrl(items, checkoutForm), '_blank', 'noopener,noreferrer')
   }
 
   if (items.length === 0) {
@@ -106,33 +89,18 @@ export default function CartPage() {
         <div className="grid lg:grid-cols-[1fr_400px] gap-10 items-start">
           {/* Items */}
           <div className="space-y-4">
-            {/* Currency selector */}
-            <div className="card p-4 flex items-center gap-3">
-              <span className="text-sm font-medium text-brand-dark">Display prices in:</span>
-              <div className="flex gap-2">
-                {CURRENCIES.map(c => (
-                  <button
-                    key={c.code}
-                    onClick={() => setCurrency(c.code as CurrencyCode)}
-                    className="text-sm font-semibold px-3 py-1.5 rounded-lg transition-all"
-                    style={currency === c.code
-                      ? { background: '#1A5C2A', color: 'white' }
-                      : { background: '#f5f5f4', color: '#78716C' }
-                    }
-                  >
-                    {c.code}
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {items.map(({ product, quantity }) => (
               <div key={product.id} className="card p-5 flex gap-4 items-start">
                 <div
-                  className="w-16 h-16 rounded-lg flex-shrink-0 flex items-center justify-center text-2xl"
+                  className="w-16 h-16 rounded-lg flex-shrink-0 flex items-center justify-center text-2xl overflow-hidden"
                   style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #fef3e2 100%)' }}
                 >
-                  🥫
+                  {product.imageUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                  ) : (
+                    '🥫'
+                  )}
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-brand-dark truncate">{product.name}</h3>
@@ -153,54 +121,45 @@ export default function CartPage() {
                     </button>
                   </div>
                 </div>
-                <div className="text-right flex-shrink-0">
-                  <div className="font-bold text-brand-green text-lg">
-                    {currInfo.symbol}{(getPrice(product) * quantity).toLocaleString()}
-                  </div>
-                  <div className="text-xs text-brand-muted">{currInfo.symbol}{getPrice(product).toLocaleString()} ea</div>
-                  <button
-                    onClick={() => removeItem(product.id)}
-                    className="mt-2 text-red-400 hover:text-red-600 transition-colors"
-                    aria-label="Remove item"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
+                <button
+                  onClick={() => removeItem(product.id)}
+                  className="flex-shrink-0 text-red-400 hover:text-red-600 transition-colors"
+                  aria-label="Remove item"
+                >
+                  <Trash2 size={14} />
+                </button>
               </div>
             ))}
           </div>
 
           {/* Right: summary + checkout */}
           <div className="space-y-4">
-            {/* Summary */}
             <div className="card p-6">
               <h2 className="font-bold text-brand-dark text-lg mb-4">Order Summary</h2>
               <div className="flex justify-between text-sm text-brand-muted mb-2">
-                <span>Subtotal</span>
-                <span>{currInfo.symbol}{parseFloat(totalPrice).toLocaleString()}</span>
+                <span>Items</span>
+                <span>{items.reduce((sum, item) => sum + item.quantity, 0)}</span>
               </div>
-              <div className="flex justify-between text-sm text-brand-muted mb-4">
+              <div className="flex justify-between text-sm text-brand-muted mb-2">
+                <span>Pricing</span>
+                <span className="text-brand-green font-medium">Confirmed on WhatsApp</span>
+              </div>
+              <div className="flex justify-between text-sm text-brand-muted">
                 <span>Delivery</span>
                 <span className="text-brand-green font-medium">Confirmed after order</span>
               </div>
-              <div className="border-t border-stone-100 pt-4 flex justify-between font-bold text-brand-dark">
-                <span>Total</span>
-                <span className="text-brand-green text-xl">{currInfo.symbol}{parseFloat(totalPrice).toLocaleString()}</span>
-              </div>
             </div>
 
-            {/* WhatsApp shortcut */}
             <a
-              href={buildWhatsAppMessage(items, currency, totalPrice)}
+              href={buildWhatsAppUrl(items)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full text-white font-semibold py-3.5 rounded-xl transition-colors"
               style={{ background: '#25D366' }}
             >
-              <span>📱</span> Order via WhatsApp instead
+              <span>📱</span> Order via WhatsApp
             </a>
 
-            {/* Checkout form */}
             <div className="card p-6">
               <h2 className="font-bold text-brand-dark text-lg mb-4">Delivery Details</h2>
               <form onSubmit={handleCheckout} className="space-y-3">
@@ -215,8 +174,8 @@ export default function CartPage() {
                   <option value="stripe">Card (Stripe)</option>
                   <option value="paypal">PayPal</option>
                 </select>
-                <button type="submit" disabled={submitting} className="btn-green w-full py-3.5 disabled:opacity-60">
-                  {submitting ? 'Placing order...' : 'Place Order'}
+                <button type="submit" className="btn-green w-full py-3.5">
+                  Order via WhatsApp
                 </button>
               </form>
             </div>

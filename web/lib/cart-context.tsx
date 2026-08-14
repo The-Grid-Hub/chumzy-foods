@@ -1,22 +1,22 @@
 'use client'
-import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react'
+import { createContext, useContext, useReducer, useEffect, useState, ReactNode } from 'react'
 import type { CartItem, Product } from './types'
-import type { CurrencyCode } from './constants'
 
 interface CartState {
   items: CartItem[]
-  currency: CurrencyCode
 }
 
 type CartAction =
-  | { type: 'ADD_ITEM'; product: Product; currency: CurrencyCode }
+  | { type: 'HYDRATE'; items: CartItem[] }
+  | { type: 'ADD_ITEM'; product: Product }
   | { type: 'REMOVE_ITEM'; productId: number }
   | { type: 'UPDATE_QTY'; productId: number; quantity: number }
-  | { type: 'SET_CURRENCY'; currency: CurrencyCode }
   | { type: 'CLEAR' }
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
+    case 'HYDRATE':
+      return { ...state, items: action.items }
     case 'ADD_ITEM': {
       const existing = state.items.find(i => i.product.id === action.product.id)
       if (existing) {
@@ -31,7 +31,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       }
       return {
         ...state,
-        items: [...state.items, { product: action.product, quantity: 1, currency: action.currency }],
+        items: [...state.items, { product: action.product, quantity: 1 }],
       }
     }
     case 'REMOVE_ITEM':
@@ -46,8 +46,6 @@ function cartReducer(state: CartState, action: CartAction): CartState {
           i.product.id === action.productId ? { ...i, quantity: action.quantity } : i
         ),
       }
-    case 'SET_CURRENCY':
-      return { ...state, currency: action.currency }
     case 'CLEAR':
       return { ...state, items: [] }
     default:
@@ -59,53 +57,52 @@ interface CartContextValue extends CartState {
   addItem: (product: Product) => void
   removeItem: (productId: number) => void
   updateQty: (productId: number, quantity: number) => void
-  setCurrency: (currency: CurrencyCode) => void
   clearCart: () => void
   totalItems: number
-  totalPrice: string
 }
 
 const CartContext = createContext<CartContextValue | null>(null)
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(cartReducer, { items: [], currency: 'USD' })
+  const [state, dispatch] = useReducer(cartReducer, { items: [] })
+
+  const [hydrated, setHydrated] = useState(false)
 
   useEffect(() => {
-    const stored = localStorage.getItem('chumzy-cart')
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      parsed.items?.forEach((item: CartItem) => {
-        dispatch({ type: 'ADD_ITEM', product: item.product, currency: parsed.currency || 'USD' })
-      })
+    try {
+      const stored = localStorage.getItem('chumzy-cart')
+      if (stored) {
+        const parsed: unknown = JSON.parse(stored)
+        const items = (parsed as CartState | null)?.items
+        // Restore in one shot — dispatching ADD_ITEM per line would reset every
+        // quantity to 1.
+        if (Array.isArray(items)) dispatch({ type: 'HYDRATE', items })
+      }
+    } catch {
+      // Corrupt or unavailable storage — start with an empty cart.
+      localStorage.removeItem('chumzy-cart')
     }
+    setHydrated(true)
   }, [])
 
   useEffect(() => {
+    // Don't write until the restore has run, or we'd clobber it with the empty
+    // initial state on first paint.
+    if (!hydrated) return
     localStorage.setItem('chumzy-cart', JSON.stringify(state))
-  }, [state])
-
-  const getPrice = (product: Product) => {
-    if (state.currency === 'NGN') return parseFloat(product.priceNgn || '0')
-    if (state.currency === 'GBP') return parseFloat(product.priceGbp || '0')
-    return parseFloat(product.priceUsd || '0')
-  }
+  }, [state, hydrated])
 
   const totalItems = state.items.reduce((s, i) => s + i.quantity, 0)
-  const totalPrice = state.items
-    .reduce((s, i) => s + getPrice(i.product) * i.quantity, 0)
-    .toFixed(2)
 
   return (
     <CartContext.Provider
       value={{
         ...state,
-        addItem: (product) => dispatch({ type: 'ADD_ITEM', product, currency: state.currency }),
+        addItem: (product) => dispatch({ type: 'ADD_ITEM', product }),
         removeItem: (productId) => dispatch({ type: 'REMOVE_ITEM', productId }),
         updateQty: (productId, quantity) => dispatch({ type: 'UPDATE_QTY', productId, quantity }),
-        setCurrency: (currency) => dispatch({ type: 'SET_CURRENCY', currency }),
         clearCart: () => dispatch({ type: 'CLEAR' }),
         totalItems,
-        totalPrice,
       }}
     >
       {children}

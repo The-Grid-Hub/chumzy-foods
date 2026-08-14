@@ -20,7 +20,16 @@ const config: Config = {
           red: '#B91C1C',
           dark: '#1C1917',
           muted: '#78716C',
+          /** Bright WhatsApp green — accents and icons only; ~2:1 with white. */
+          whatsapp: '#25D366',
+          /** Dark WhatsApp teal — 7.7:1 with white, safe for text surfaces. */
+          'whatsapp-dark': '#075E54',
         },
+      },
+      backgroundImage: {
+        'brand-gradient': 'linear-gradient(135deg, #0F3D1A 0%, #1A5C2A 100%)',
+        'brand-gradient-hero':
+          'linear-gradient(135deg, #0F3D1A 0%, #1A5C2A 60%, #2E7D44 100%)',
       },
     },
   },

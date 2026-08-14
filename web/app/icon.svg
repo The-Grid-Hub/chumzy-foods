@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Chumzy favicon</title>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="#1A5C2A"/>
+  <path d="M 365 139 A 166 166 0 1 0 365 373" fill="none" stroke="#FFFBF5" stroke-width="72" stroke-linecap="round"/>
+  <path d="M 214 150 V 370 M 214 150 H 378 M 214 247 H 342" fill="none" stroke="#D97706" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

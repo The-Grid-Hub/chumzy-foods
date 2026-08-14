@@ -1,6 +1,18 @@
 'use client'
 import { motion } from 'framer-motion'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, ArrowRight } from 'lucide-react'
+import { PRODUCTS } from '@/lib/products'
+
+const stats = [
+  { value: '2020', label: 'Year Founded', sub: 'Gwagwalada, Abuja' },
+  {
+    value: `${PRODUCTS.length}`,
+    label: 'Products',
+    sub: 'Fresh raw ingredients',
+  },
+  { value: '3', label: 'Continents Served', sub: 'Africa · Europe · Americas' },
+  { value: '100%', label: 'Quality Focus', sub: 'No compromise on freshness' },
+]
 
 const highlights = [
   'Registered Nigerian business since October 2020',
@@ -46,11 +58,20 @@ export default function About() {
             <ul className="space-y-3">
               {highlights.map(h => (
                 <li key={h} className="flex items-start gap-3 text-sm text-brand-dark">
-                  <CheckCircle size={18} className="text-brand-green flex-shrink-0 mt-0.5" />
+                  <CheckCircle
+                    size={18}
+                    aria-hidden="true"
+                    className="text-brand-green flex-shrink-0 mt-0.5"
+                  />
                   {h}
                 </li>
               ))}
             </ul>
+
+            <a href="#products" className="btn-green mt-8 inline-flex items-center gap-2 no-underline">
+              Browse our products
+              <ArrowRight size={16} aria-hidden="true" />
+            </a>
           </motion.div>
 
           {/* Stats cards */}
@@ -61,16 +82,10 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="grid grid-cols-2 gap-4"
           >
-            {[
-              { value: '2020', label: 'Year Founded', sub: 'Gwagwalada, Abuja' },
-              { value: '10+', label: 'Products', sub: 'Fresh raw ingredients' },
-              { value: '2', label: 'Continents Served', sub: 'Africa · Europe · Americas' },
-              { value: '100%', label: 'Quality Focus', sub: 'No compromise on freshness' },
-            ].map(stat => (
+            {stats.map(stat => (
               <div
                 key={stat.label}
-                className="card p-6 border-brand-green/10"
-                style={{ borderLeft: '4px solid #1A5C2A' }}
+                className="card p-6 border-brand-green/10 border-l-4 border-l-brand-green"
               >
                 <div className="text-3xl font-extrabold text-brand-green mb-1">{stat.value}</div>
                 <div className="font-semibold text-brand-dark text-sm">{stat.label}</div>

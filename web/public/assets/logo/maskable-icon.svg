@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Chumzy maskable application icon</title>
+  <rect width="512" height="512" fill="#1A5C2A"/>
+  <path d="M 357 151 A 148 148 0 1 0 357 361" fill="none" stroke="#FFFBF5" stroke-width="68" stroke-linecap="round"/>
+  <path d="M 219 160 V 354 M 219 160 H 361 M 219 247 H 331" fill="none" stroke="#D97706" stroke-width="60" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

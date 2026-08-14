@@ -1,19 +1,40 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { ShoppingCart, Menu, X, Phone } from 'lucide-react'
+import Image from 'next/image'
+import { Menu, X, MessageCircle, ShoppingCart } from 'lucide-react'
+import { NAV_LINKS, WHATSAPP_URL, BUSINESS_NAME } from '@/lib/constants'
 import { useCart } from '@/lib/cart-context'
-import { NAV_LINKS, WHATSAPP_URL } from '@/lib/constants'
+import logo from '@/public/assets/logo/navbar-wordmark.png'
+
+const MOBILE_MENU_ID = 'mobile-nav'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { totalItems } = useCart()
   const navRef = useRef<HTMLElement>(null)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const { totalItems } = useCart()
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    // rAF-throttled: the raw scroll event fires far more often than `scrolled`
+    // can change.
+    let ticking = false
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 60)
+        ticking = false
+      })
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return
+      setMenuOpen((open) => {
+        if (open) toggleRef.current?.focus()
+        return false
+      })
+    }
     const onClickOutside = (e: MouseEvent) => {
       if (navRef.current && !navRef.current.contains(e.target as Node)) setMenuOpen(false)
     }
@@ -29,29 +50,35 @@ export default function Header() {
 
   return (
     <header
-      className="sticky top-0 z-50 transition-shadow duration-300"
-      style={{
-        background: 'linear-gradient(135deg, #0F3D1A 0%, #1A5C2A 100%)',
-        boxShadow: scrolled ? '0 2px 24px rgba(15,61,26,0.3)' : 'none',
-      }}
+      className={`on-dark sticky top-0 z-50 bg-brand-gradient transition-shadow duration-300 ${
+        scrolled ? 'shadow-[0_2px_24px_rgba(15,61,26,0.3)]' : ''
+      }`}
     >
-      <nav ref={navRef} aria-label="Primary navigation">
+      <nav ref={navRef} aria-label="Primary">
         <div className="content-wrap flex items-center justify-between h-[70px]">
-          {/* Logo */}
-          <a href="#home" className="flex flex-col leading-none no-underline">
-            <span className="text-white font-bold text-xl tracking-wide">CHUMZY</span>
-            <span className="text-brand-amber text-[10px] font-semibold tracking-[0.15em] uppercase">
-              Raw Food Materials
-            </span>
+          <a href="#home" className="flex items-center no-underline">
+            {/* Sized off the asset's proportions, not the box: "CHUMZY" is only 23%
+                of the PNG's height, so h-14 is what puts it at a ~13px cap height —
+                level with the nav links beside it. `sizes` tracks the 134px render
+                width; the source is 1200px and would otherwise ship an oversized
+                variant. */}
+            <Image
+              src={logo}
+              alt={BUSINESS_NAME}
+              priority
+              quality={100}
+              sizes="140px"
+              className="h-10 sm:h-14 w-auto"
+            />
           </a>
 
           {/* Desktop nav */}
           <div className="hidden lg:flex items-center gap-7">
-            {NAV_LINKS.map(link => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-semibold tracking-wide text-white/80 hover:text-brand-amber no-underline transition-colors duration-200"
+                className="text-sm font-semibold tracking-wide text-white/80 hover:text-brand-amber no-underline transition-colors duration-200 rounded-sm"
               >
                 {link.label}
               </a>
@@ -59,48 +86,59 @@ export default function Header() {
           </div>
 
           {/* CTA row */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 bg-brand-amber hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200"
+              className="hidden sm:flex items-center gap-2 bg-brand-amber hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 no-underline"
             >
-              <Phone size={14} />
+              <MessageCircle size={14} aria-hidden="true" />
               Order on WhatsApp
+              <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
 
             <Link
               href="/cart"
-              className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors duration-200"
-              aria-label={`Cart (${totalItems} items)`}
+              className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors no-underline"
             >
-              <ShoppingCart size={18} />
+              <ShoppingCart size={18} aria-hidden="true" />
+              <span className="sr-only">
+                View cart, {totalItems} {totalItems === 1 ? 'item' : 'items'}
+              </span>
               {totalItems > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-5 h-5 bg-brand-amber text-white text-[10px] font-bold rounded-full">
-                  {totalItems > 9 ? '9+' : totalItems}
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-brand-amber text-white text-[11px] font-bold flex items-center justify-center"
+                >
+                  {totalItems}
                 </span>
               )}
             </Link>
 
             <button
+              ref={toggleRef}
+              type="button"
               className="lg:hidden flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-colors"
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(v => !v)}
+              aria-controls={MOBILE_MENU_ID}
+              onClick={() => setMenuOpen((v) => !v)}
             >
-              {menuOpen ? <X size={20} /> : <Menu size={20} />}
+              {menuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — `hidden` (not just max-height:0) so the links leave the
+            tab order and the a11y tree when collapsed. */}
         <div
-          className="lg:hidden overflow-hidden transition-all duration-300"
-          style={{ maxHeight: menuOpen ? '400px' : '0', borderTop: menuOpen ? '1px solid rgba(255,255,255,0.1)' : 'none' }}
+          id={MOBILE_MENU_ID}
+          hidden={!menuOpen}
+          className="lg:hidden border-t border-white/10"
         >
           <div className="content-wrap py-4 flex flex-col gap-1">
-            {NAV_LINKS.map(link => (
+            {NAV_LINKS.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
@@ -114,10 +152,11 @@ export default function Header() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 flex items-center justify-center gap-2 bg-brand-amber text-white font-semibold py-3 rounded-lg"
+              className="mt-3 flex items-center justify-center gap-2 bg-brand-amber hover:bg-amber-600 text-white font-semibold py-3 rounded-lg transition-colors duration-200 no-underline"
             >
-              <Phone size={16} />
+              <MessageCircle size={16} aria-hidden="true" />
               Order on WhatsApp
+              <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
           </div>
         </div>
