@@ -14,13 +14,47 @@
 
 html {
   scroll-behavior: smooth;
+  /* Clears the 70px sticky header so hash links don't land under it. */
+  scroll-padding-top: 5rem;
 }
 
 body {
   background: var(--brand-cream);
   color: #1C1917;
-  font-family: system-ui, -apple-system, sans-serif;
+  /* Raleway via next/font; system-ui covers the paint before the woff2 lands. */
+  font-family: var(--font-raleway), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer base {
+  /* Tailwind v3 Preflight does not set this on <button>. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    @apply cursor-pointer;
+  }
+
+  /* Baseline visible focus for anything that doesn't define its own. */
+  a:focus-visible,
+  button:focus-visible,
+  [tabindex]:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline-none ring-2 ring-brand-green ring-offset-2 ring-offset-white rounded-sm;
+  }
+
+  /* Dark surfaces (header, footer, hero) need a light ring to be visible. */
+  .on-dark a:focus-visible,
+  .on-dark button:focus-visible,
+  .on-dark [tabindex]:focus-visible {
+    @apply ring-white ring-offset-brand-green-dark;
+  }
 }
 
 @layer components {
@@ -35,18 +69,34 @@ body {
   }
 
   .btn-amber {
-    @apply inline-block bg-brand-amber text-white font-semibold px-6 py-3 rounded-lg
-           transition-all duration-200 hover:bg-amber-600 active:scale-95
+    @apply inline-block bg-brand-amber-cta text-white font-semibold px-6 py-3 rounded-lg
+           transition-all duration-200 hover:bg-brand-amber-cta-dark active:scale-95
            focus:outline-none focus:ring-2 focus:ring-brand-amber focus:ring-offset-2;
   }
 
   .btn-outline {
     @apply inline-block border-2 border-brand-green text-brand-green font-semibold px-6 py-3 rounded-lg
-           transition-all duration-200 hover:bg-brand-green hover:text-white active:scale-95;
+           transition-all duration-200 hover:bg-brand-green hover:text-white active:scale-95
+           focus:outline-none focus:ring-2 focus:ring-current focus:ring-offset-2;
+  }
+
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-whatsapp-dark text-white
+           font-semibold px-6 py-3.5 rounded-xl transition-colors duration-200
+           hover:bg-brand-green-dark focus:outline-none focus:ring-2
+           focus:ring-brand-whatsapp focus:ring-offset-2;
+  }
+
+  /* Visible only when focused — the skip link. */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100]
+           focus:bg-white focus:text-brand-green-dark focus:font-semibold
+           focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg
+           focus:outline-none focus:ring-2 focus:ring-brand-amber;
   }
 
   .section-heading {
-    @apply text-3xl sm:text-4xl font-bold text-brand-dark leading-tight;
+    @apply font-serif text-3xl sm:text-4xl font-bold text-brand-dark leading-tight;
   }
 
   .section-subheading {

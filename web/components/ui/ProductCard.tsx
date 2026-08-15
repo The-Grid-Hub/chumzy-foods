@@ -1,55 +1,51 @@
 'use client'
 import { useState } from 'react'
-import { ShoppingCart, Check, Package } from 'lucide-react'
-import { useCart } from '@/lib/cart-context'
+import { Package, Check, Plus } from 'lucide-react'
 import type { Product } from '@/lib/types'
-import { CURRENCIES } from '@/lib/constants'
+import { useCart } from '@/lib/cart-context'
 
 interface Props {
   product: Product
 }
 
 export default function ProductCard({ product }: Props) {
-  const { addItem, currency } = useCart()
-  const [added, setAdded] = useState(false)
-
-  const currencyInfo = CURRENCIES.find(c => c.code === currency)!
-
-  const price =
-    currency === 'NGN'
-      ? product.priceNgn
-      : currency === 'GBP'
-      ? product.priceGbp
-      : product.priceUsd
+  const [imageFailed, setImageFailed] = useState(false)
+  const [justAdded, setJustAdded] = useState(false)
+  const { addItem } = useCart()
 
   const handleAdd = () => {
     addItem(product)
-    setAdded(true)
-    setTimeout(() => setAdded(false), 1500)
+    setJustAdded(true)
+    window.setTimeout(() => setJustAdded(false), 1800)
   }
 
   return (
     <div className="card flex flex-col h-full transition-shadow duration-300 hover:shadow-md">
-      {/* Image placeholder */}
       <div
         className="relative h-48 flex items-center justify-center"
         style={{ background: 'linear-gradient(135deg, #f0fdf4 0%, #fef3e2 100%)' }}
       >
-        {product.imageUrl ? (
+        {product.imageUrl && !imageFailed ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={product.imageUrl}
-            alt={product.name}
+            // Decorative: the product name is already the adjacent <h3>.
+            alt=""
+            width={720}
+            height={192}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover"
+            onError={() => setImageFailed(true)}
           />
         ) : (
           <div className="flex flex-col items-center gap-2 text-brand-green/40">
-            <Package size={48} />
+            <Package size={48} aria-hidden="true" />
             <span className="text-xs text-brand-muted">{product.category}</span>
           </div>
         )}
         {product.featured && (
-          <span className="absolute top-3 left-3 badge bg-brand-amber text-white text-[10px]">
+          <span className="absolute top-3 left-3 badge bg-brand-amber-cta text-white text-[10px]">
             Popular
           </span>
         )}
@@ -72,31 +68,32 @@ export default function ProductCard({ product }: Props) {
           {product.packagingSize}
         </div>
 
-        <div className="flex items-center justify-between">
-          <div>
-            {price ? (
-              <span className="text-xl font-extrabold text-brand-green">
-                {currencyInfo.symbol}{parseFloat(price).toLocaleString()}
-              </span>
-            ) : (
-              <span className="text-sm text-brand-muted">Price on request</span>
-            )}
-            <span className="text-xs text-brand-muted ml-1">/ unit</span>
-          </div>
-
-          <button
-            onClick={handleAdd}
-            disabled={!product.inStock}
-            className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-            style={{
-              background: added ? '#1A5C2A' : '#D97706',
-              color: 'white',
-            }}
-          >
-            {added ? <Check size={14} /> : <ShoppingCart size={14} />}
-            {added ? 'Added' : 'Add to cart'}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={!product.inStock}
+          className="mt-auto w-full min-h-11 inline-flex items-center justify-center gap-2
+                     rounded-lg font-semibold text-sm transition-colors duration-200
+                     bg-brand-green text-white hover:bg-brand-green-dark
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
+                     disabled:bg-stone-100 disabled:text-stone-500 disabled:cursor-not-allowed"
+        >
+          {justAdded ? (
+            <>
+              <Check size={16} aria-hidden="true" />
+              Added
+            </>
+          ) : (
+            <>
+              <Plus size={16} aria-hidden="true" />
+              {product.inStock ? 'Add to cart' : 'Out of stock'}
+            </>
+          )}
+          <span className="sr-only">, {product.name}</span>
+        </button>
+        <span aria-live="polite" className="sr-only">
+          {justAdded ? `${product.name} added to cart` : ''}
+        </span>
       </div>
     </div>
   )
