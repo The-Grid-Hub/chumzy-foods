@@ -13,7 +13,7 @@ export default function manifest(): MetadataRoute.Manifest {
     // screen icon, where all-caps reads as shouting.
     short_name: 'Chumzy',
     description:
-      'Fresh Nigerian raw food materials — oils, soup ingredients, grains, dried fish.',
+      'Fresh Nigerian raw food materials: oils, soup ingredients, grains, dried fish.',
     start_url: '/',
     display: 'standalone',
     background_color: '#FFFBF5', // brand.cream — matches `body` in globals.css

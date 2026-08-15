@@ -21,7 +21,7 @@ export default function Products() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <span className="text-brand-amber font-semibold text-sm uppercase tracking-widest mb-3 block">
+          <span className="text-brand-amber-cta font-semibold text-sm uppercase tracking-widest mb-3 block">
             Our Products
           </span>
           <h2 className="section-heading mb-4">Fresh Nigerian Ingredients</h2>

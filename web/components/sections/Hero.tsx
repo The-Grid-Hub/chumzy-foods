@@ -47,7 +47,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center gap-2 bg-brand-amber/20 text-brand-amber-light font-semibold text-sm px-4 py-1.5 rounded-full mb-6 border border-brand-amber/30">
+              <span className="inline-flex items-center gap-2 bg-brand-amber/20 text-brand-amber-bright font-semibold text-sm px-4 py-1.5 rounded-full mb-6 border border-brand-amber/30">
                 <Leaf size={14} aria-hidden="true" />
                 Fresh · Authentic · Affordable
               </span>
@@ -57,7 +57,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-white font-extrabold text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6"
+              className="text-white font-serif font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6"
             >
               Fresh Nigerian
               <br />
@@ -72,7 +72,7 @@ export default function Hero() {
               transition={{ duration: 0.7, delay: 0.25 }}
               className="text-white/80 text-lg sm:text-xl leading-relaxed mb-10"
             >
-              Palm oil, egusi, ogbono, garri, stockfish and more — sourced fresh,
+              Palm oil, egusi, ogbono, garri, stockfish and more. Sourced fresh,
               packed with care, and shipped to Nigeria, UK, and USA. The taste of home, wherever you are.
             </motion.p>
 

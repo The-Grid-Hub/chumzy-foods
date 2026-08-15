@@ -114,7 +114,7 @@ export const PRODUCTS: Product[] = [
     name: 'Tin Tomatoes',
     slug: 'tin-tomatoes',
     description:
-      'Premium quality canned tomatoes — concentrated and ready for your stews, jollof rice, and Nigerian sauces.',
+      'Premium quality canned tomatoes, concentrated and ready for your stews, jollof rice, and Nigerian sauces.',
     category: 'Canned Goods',
     packagingSize: '400g tin, 6-pack, 12-pack',
     inStock: true,

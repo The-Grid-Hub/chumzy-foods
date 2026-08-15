@@ -123,15 +123,15 @@ export default function BulkOrder() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <span className="text-brand-amber font-semibold text-sm uppercase tracking-widest mb-3 block">
+            <span className="text-brand-amber-cta font-semibold text-sm uppercase tracking-widest mb-3 block">
               Wholesale &amp; Bulk
             </span>
             <h2 className="section-heading mb-6">
               Bulk Order <span className="text-brand-green">Request</span>
             </h2>
             <p className="text-brand-muted leading-relaxed mb-8">
-              Whether you run a restaurant, food retail business, or you&apos;re sending a large
-              shipment to family abroad — we cater to bulk orders with competitive pricing
+              Running a restaurant or food retail business? Sending a large shipment to
+              family abroad? We handle bulk orders with competitive pricing
               and flexible arrangements.
             </p>
             <ul className="space-y-4 mb-10">
@@ -291,7 +291,7 @@ export default function BulkOrder() {
                   </span>
                 ) : (
                   <span className="text-brand-muted">
-                    Your details are sent as a WhatsApp message — nothing is stored on this site.
+                    Your details are sent as a WhatsApp message. Nothing is stored on this site.
                   </span>
                 )}
               </p>

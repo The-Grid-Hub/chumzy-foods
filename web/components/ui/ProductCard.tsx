@@ -45,7 +45,7 @@ export default function ProductCard({ product }: Props) {
           </div>
         )}
         {product.featured && (
-          <span className="absolute top-3 left-3 badge bg-brand-amber text-white text-[10px]">
+          <span className="absolute top-3 left-3 badge bg-brand-amber-cta text-white text-[10px]">
             Popular
           </span>
         )}
@@ -76,7 +76,7 @@ export default function ProductCard({ product }: Props) {
                      rounded-lg font-semibold text-sm transition-colors duration-200
                      bg-brand-green text-white hover:bg-brand-green-dark
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2
-                     disabled:bg-stone-100 disabled:text-stone-400 disabled:cursor-not-allowed"
+                     disabled:bg-stone-100 disabled:text-stone-500 disabled:cursor-not-allowed"
         >
           {justAdded ? (
             <>
@@ -89,7 +89,7 @@ export default function ProductCard({ product }: Props) {
               {product.inStock ? 'Add to cart' : 'Out of stock'}
             </>
           )}
-          <span className="sr-only"> — {product.name}</span>
+          <span className="sr-only">, {product.name}</span>
         </button>
         <span aria-live="polite" className="sr-only">
           {justAdded ? `${product.name} added to cart` : ''}

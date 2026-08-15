@@ -21,7 +21,8 @@ html {
 body {
   background: var(--brand-cream);
   color: #1C1917;
-  font-family: system-ui, -apple-system, sans-serif;
+  /* Raleway via next/font; system-ui covers the paint before the woff2 lands. */
+  font-family: var(--font-raleway), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -68,8 +69,8 @@ body {
   }
 
   .btn-amber {
-    @apply inline-block bg-brand-amber text-white font-semibold px-6 py-3 rounded-lg
-           transition-all duration-200 hover:bg-amber-600 active:scale-95
+    @apply inline-block bg-brand-amber-cta text-white font-semibold px-6 py-3 rounded-lg
+           transition-all duration-200 hover:bg-brand-amber-cta-dark active:scale-95
            focus:outline-none focus:ring-2 focus:ring-brand-amber focus:ring-offset-2;
   }
 
@@ -95,7 +96,7 @@ body {
   }
 
   .section-heading {
-    @apply text-3xl sm:text-4xl font-bold text-brand-dark leading-tight;
+    @apply font-serif text-3xl sm:text-4xl font-bold text-brand-dark leading-tight;
   }
 
   .section-subheading {

@@ -78,7 +78,7 @@ export default function Header() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-semibold tracking-wide text-white/80 hover:text-brand-amber no-underline transition-colors duration-200 rounded-sm"
+                className="text-sm font-semibold tracking-wide text-white/80 hover:text-brand-amber-bright no-underline transition-colors duration-200 rounded-sm"
               >
                 {link.label}
               </a>
@@ -91,7 +91,7 @@ export default function Header() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-2 bg-brand-amber hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 no-underline"
+              className="hidden sm:flex items-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 no-underline"
             >
               <MessageCircle size={14} aria-hidden="true" />
               Order on WhatsApp
@@ -109,7 +109,7 @@ export default function Header() {
               {totalItems > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-brand-amber text-white text-[11px] font-bold flex items-center justify-center"
+                  className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-brand-amber-cta text-white text-[11px] font-bold flex items-center justify-center"
                 >
                   {totalItems}
                 </span>
@@ -143,7 +143,7 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-sm font-semibold text-white/80 hover:text-brand-amber no-underline py-3 px-2 rounded transition-colors"
+                className="text-sm font-semibold text-white/80 hover:text-brand-amber-bright no-underline py-3 px-2 rounded transition-colors"
               >
                 {link.label}
               </a>
@@ -152,7 +152,7 @@ export default function Header() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-3 flex items-center justify-center gap-2 bg-brand-amber hover:bg-amber-600 text-white font-semibold py-3 rounded-lg transition-colors duration-200 no-underline"
+              className="mt-3 flex items-center justify-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white font-semibold py-3 rounded-lg transition-colors duration-200 no-underline"
             >
               <MessageCircle size={16} aria-hidden="true" />
               Order on WhatsApp

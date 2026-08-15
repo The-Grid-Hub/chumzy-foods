@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import { Lora, Raleway } from 'next/font/google'
 import './globals.css'
 import { CartProvider } from '@/lib/cart-context'
 import MotionProvider from '@/components/layout/MotionProvider'
@@ -7,11 +8,29 @@ import Footer from '@/components/layout/Footer'
 import StructuredData from '@/components/layout/StructuredData'
 import { BUSINESS_NAME, SITE_URL } from '@/lib/constants'
 
+// Self-hosted by next/font at build time: no request to fonts.googleapis.com and
+// no swap flash. `display: 'swap'` still covers the first paint before the
+// woff2 lands. Lora tops out at 700 — headings use font-bold, never
+// font-extrabold, so the browser is never asked to synthesise a heavier cut.
+const lora = Lora({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-lora',
+  display: 'swap',
+})
+
+const raleway = Raleway({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-raleway',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: `${BUSINESS_NAME} | Fresh Nigerian Ingredients`,
   description:
-    'Buy authentic Nigerian raw food materials — palm oil, egusi, ogbono, garri, stockfish, and more. Delivered to Nigeria, UK, and USA. Retail and bulk orders available.',
+    'Buy authentic Nigerian raw food materials: palm oil, egusi, ogbono, garri, stockfish, and more. Delivered to Nigeria, UK, and USA. Retail and bulk orders available.',
   alternates: { canonical: '/' },
   openGraph: {
     title: BUSINESS_NAME,
@@ -40,7 +59,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-NG">
+    <html lang="en-NG" className={`${lora.variable} ${raleway.variable}`}>
       <body>
         <StructuredData />
         <a href="#main" className="skip-link">

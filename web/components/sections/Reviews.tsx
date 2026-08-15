@@ -40,7 +40,7 @@ export default function Reviews() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <span className="text-brand-amber font-semibold text-sm uppercase tracking-widest mb-3 block">
+          <span className="text-brand-amber-cta font-semibold text-sm uppercase tracking-widest mb-3 block">
             Customer Reviews
           </span>
           <h2 className="section-heading mb-4">What Our Customers Say</h2>

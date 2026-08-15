@@ -93,7 +93,7 @@ function ProductPanel({ panel, still }: { panel: Panel; still: boolean }) {
       <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
 
       {product.featured && (
-        <span className="absolute top-3 left-3 badge bg-brand-amber text-white text-[10px]">
+        <span className="absolute top-3 left-3 badge bg-brand-amber-cta text-white text-[10px]">
           Popular
         </span>
       )}

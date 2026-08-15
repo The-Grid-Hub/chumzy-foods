@@ -46,7 +46,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-white/80 hover:text-brand-amber text-sm no-underline transition-colors duration-200 rounded-sm"
+                    className="text-white/80 hover:text-brand-amber-bright text-sm no-underline transition-colors duration-200 rounded-sm"
                   >
                     {link.label}
                   </a>
@@ -64,23 +64,23 @@ export default function Footer() {
               <li>
                 <a
                   href={PHONE_TEL_HREF}
-                  className="flex items-center gap-3 text-white/80 hover:text-brand-amber text-sm underline underline-offset-4 decoration-white/30 hover:decoration-brand-amber transition-colors"
+                  className="flex items-center gap-3 text-white/80 hover:text-brand-amber-bright text-sm underline underline-offset-4 decoration-white/30 hover:decoration-brand-amber-bright transition-colors"
                 >
-                  <Phone size={14} className="text-brand-amber flex-shrink-0" aria-hidden="true" />
+                  <Phone size={14} className="text-brand-amber-bright flex-shrink-0" aria-hidden="true" />
                   {BUSINESS_PHONE}
                 </a>
               </li>
               <li>
                 <a
                   href={`mailto:${BUSINESS_EMAIL}`}
-                  className="flex items-center gap-3 text-white/80 hover:text-brand-amber text-sm underline underline-offset-4 decoration-white/30 hover:decoration-brand-amber transition-colors break-all"
+                  className="flex items-center gap-3 text-white/80 hover:text-brand-amber-bright text-sm underline underline-offset-4 decoration-white/30 hover:decoration-brand-amber-bright transition-colors break-all"
                 >
-                  <Mail size={14} className="text-brand-amber flex-shrink-0" aria-hidden="true" />
+                  <Mail size={14} className="text-brand-amber-bright flex-shrink-0" aria-hidden="true" />
                   {BUSINESS_EMAIL}
                 </a>
               </li>
               <li className="flex items-start gap-3 text-white/80 text-sm">
-                <MapPin size={14} className="text-brand-amber flex-shrink-0 mt-0.5" aria-hidden="true" />
+                <MapPin size={14} className="text-brand-amber-bright flex-shrink-0 mt-0.5" aria-hidden="true" />
                 {BUSINESS_ADDRESS}
               </li>
             </ul>
@@ -88,7 +88,7 @@ export default function Footer() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 bg-brand-amber hover:bg-amber-600 text-white text-sm font-semibold px-5 min-h-11 rounded-lg transition-colors duration-200 no-underline"
+              className="mt-5 inline-flex items-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white text-sm font-semibold px-5 min-h-11 rounded-lg transition-colors duration-200 no-underline"
             >
               <MessageCircle size={15} aria-hidden="true" />
               Chat on WhatsApp

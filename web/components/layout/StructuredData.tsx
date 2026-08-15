@@ -19,7 +19,7 @@ const schema = {
   email: BUSINESS_EMAIL,
   telephone: BUSINESS_PHONE,
   description:
-    'Authentic Nigerian raw food materials — oils, soup ingredients, grains, beans, dried fish and canned goods. Retail and bulk, delivered to Nigeria, UK and USA.',
+    'Authentic Nigerian raw food materials: oils, soup ingredients, grains, beans, dried fish and canned goods. Retail and bulk, delivered to Nigeria, UK and USA.',
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Main Market',

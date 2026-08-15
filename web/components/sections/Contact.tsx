@@ -56,7 +56,7 @@ export default function Contact() {
           viewport={{ once: true }}
           className="text-center mb-14"
         >
-          <span className="text-brand-amber font-semibold text-sm uppercase tracking-widest mb-3 block">
+          <span className="text-brand-amber-cta font-semibold text-sm uppercase tracking-widest mb-3 block">
             Get in Touch
           </span>
           <h2 className="section-heading mb-4">Contact Us</h2>
@@ -105,7 +105,7 @@ export default function Contact() {
               className="btn-whatsapp text-base no-underline"
             >
               <MessageCircle size={20} aria-hidden="true" />
-              Chat on WhatsApp — fastest response
+              Chat on WhatsApp for the fastest response
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
 
@@ -179,7 +179,7 @@ export default function Contact() {
           >
             <div className="card relative min-h-[320px] flex-1">
               <iframe
-                title={`Map — ${BUSINESS_NAME}, ${BUSINESS_ADDRESS}`}
+                title={`Map of ${BUSINESS_NAME}, ${BUSINESS_ADDRESS}`}
                 src={GOOGLE_MAPS_EMBED_URL}
                 className="absolute inset-0 w-full h-full border-0"
                 loading="lazy"

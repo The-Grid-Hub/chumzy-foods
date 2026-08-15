@@ -20,7 +20,7 @@ export default function WhatsAppBanner() {
               <MessageCircle size={32} className="text-white" aria-hidden="true" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-2xl mb-1">
+              <h2 className="text-white font-serif font-bold text-2xl mb-1">
                 Order directly on WhatsApp
               </h2>
               <p className="text-white/90 text-base">

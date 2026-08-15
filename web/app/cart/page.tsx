@@ -69,7 +69,7 @@ export default function CartPage() {
       <main className="min-h-screen bg-brand-cream py-20">
         <div className="content-wrap max-w-lg mx-auto text-center">
           <ShoppingBag size={64} className="text-stone-300 mx-auto mb-6" />
-          <h1 className="text-2xl font-bold text-brand-dark mb-3">Your cart is empty</h1>
+          <h1 className="text-2xl font-serif font-bold text-brand-dark mb-3">Your cart is empty</h1>
           <p className="text-brand-muted mb-8">Add some products to get started!</p>
           <Link href="/#products" className="btn-green">Browse Products</Link>
         </div>
@@ -83,7 +83,7 @@ export default function CartPage() {
         <Link href="/" className="inline-flex items-center gap-2 text-brand-muted hover:text-brand-green text-sm mb-8 transition-colors">
           <ArrowLeft size={16} /> Back to shopping
         </Link>
-        <h1 className="text-3xl font-bold text-brand-dark mb-2">Your Cart</h1>
+        <h1 className="text-3xl font-serif font-bold text-brand-dark mb-2">Your Cart</h1>
         <p className="text-brand-muted mb-8">{items.length} item{items.length !== 1 ? 's' : ''}</p>
 
         <div className="grid lg:grid-cols-[1fr_400px] gap-10 items-start">
