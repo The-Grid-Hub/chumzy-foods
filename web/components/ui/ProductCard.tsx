@@ -31,8 +31,8 @@ export default function ProductCard({ product }: Props) {
             src={product.imageUrl}
             // Decorative: the product name is already the adjacent <h3>.
             alt=""
-            width={720}
-            height={192}
+            width={100}
+            height={100}
             loading="lazy"
             decoding="async"
             className="w-full h-full object-cover"
