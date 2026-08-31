@@ -4,6 +4,7 @@ import { ShoppingBag, Truck, Shield, Leaf } from 'lucide-react'
 import Image from 'next/image'
 import { WHATSAPP_URL } from '@/lib/constants'
 import HeroShowcase from '@/components/ui/HeroShowcase'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import textureImg from '@/public/products/white-beans.jpg'
 
 const badges = [
@@ -89,9 +90,11 @@ export default function Hero() {
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-outline border-white text-white hover:bg-white hover:text-brand-green text-base px-8 py-4"
+                className="btn-outline border-white text-white hover:bg-white hover:text-brand-green text-base px-8 py-4 inline-flex items-center gap-2"
               >
+                <WhatsAppIcon size={18} />
                 Order on WhatsApp
+                <span className="sr-only">(opens WhatsApp in a new tab)</span>
               </a>
             </motion.div>
 

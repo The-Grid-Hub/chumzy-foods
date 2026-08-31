@@ -2,7 +2,8 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Menu, X, MessageCircle, ShoppingCart } from 'lucide-react'
+import { Menu, X, ShoppingCart } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { NAV_LINKS, WHATSAPP_URL, BUSINESS_NAME } from '@/lib/constants'
 import { useCart } from '@/lib/cart-context'
 import logo from '@/public/assets/logo/navbar-wordmark.png'
@@ -93,7 +94,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="hidden sm:flex items-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors duration-200 no-underline"
             >
-              <MessageCircle size={14} aria-hidden="true" />
+              <WhatsAppIcon size={14} />
               Order on WhatsApp
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
@@ -154,7 +155,7 @@ export default function Header() {
               rel="noopener noreferrer"
               className="mt-3 flex items-center justify-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white font-semibold py-3 rounded-lg transition-colors duration-200 no-underline"
             >
-              <MessageCircle size={16} aria-hidden="true" />
+              <WhatsAppIcon size={16} />
               Order on WhatsApp
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>

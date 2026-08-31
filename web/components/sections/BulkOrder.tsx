@@ -2,6 +2,7 @@
 import { useId, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Package2, CheckCircle, AlertCircle } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { WHATSAPP_NUMBER } from '@/lib/constants'
 import type { BulkOrderForm } from '@/lib/types'
 
@@ -276,7 +277,11 @@ export default function BulkOrder() {
                 />
               </div>
 
-              <button type="submit" className="btn-green w-full text-base py-3.5">
+              <button
+                type="submit"
+                className="btn-green w-full text-base py-3.5 inline-flex items-center justify-center gap-2"
+              >
+                <WhatsAppIcon size={18} />
                 Request via WhatsApp
               </button>
 
