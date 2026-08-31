@@ -1,7 +1,8 @@
 'use client'
 import { useId, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, MessageCircle, AlertCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, AlertCircle } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import {
   BUSINESS_EMAIL,
   BUSINESS_PHONE,
@@ -104,7 +105,7 @@ export default function Contact() {
               rel="noopener noreferrer"
               className="btn-whatsapp text-base no-underline"
             >
-              <MessageCircle size={20} aria-hidden="true" />
+              <WhatsAppIcon size={20} />
               Chat on WhatsApp for the fastest response
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
@@ -165,7 +166,11 @@ export default function Contact() {
                 </p>
               )}
 
-              <button type="submit" className="btn-green w-full">
+              <button
+                type="submit"
+                className="btn-green w-full inline-flex items-center justify-center gap-2"
+              >
+                <WhatsAppIcon size={18} />
                 Send via WhatsApp
               </button>
             </form>

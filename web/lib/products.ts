@@ -46,7 +46,7 @@ export const PRODUCTS: Product[] = [
     category: 'Grains & Cassava',
     packagingSize: '1kg, 5kg, 10kg, 25kg',
     inStock: true,
-    imageUrl: '/products/white-garri.jpg',
+    imageUrl: '/products/white-garri.jpeg',
     featured: false,
   },
   {
@@ -70,7 +70,7 @@ export const PRODUCTS: Product[] = [
     category: 'Grains & Cassava',
     packagingSize: '1kg, 5kg, 10kg',
     inStock: true,
-    imageUrl: '/products/ijabu-garri.jpg',
+    imageUrl: '/products/ijebu-garri.jpeg',
     featured: true,
   },
   {
@@ -82,7 +82,7 @@ export const PRODUCTS: Product[] = [
     category: 'Dried Fish & Seafood',
     packagingSize: 'Per piece, 1kg pack, 5kg bulk',
     inStock: true,
-    imageUrl: '/products/stockfish.jpg',
+    imageUrl: '/products/stockfish.jpeg',
     featured: true,
   },
   {
@@ -94,7 +94,7 @@ export const PRODUCTS: Product[] = [
     category: 'Dried Fish & Seafood',
     packagingSize: '500g, 1kg, 5kg',
     inStock: true,
-    imageUrl: '/products/dryfish.jpg',
+    imageUrl: '/products/dryfish.jpeg',
     featured: false,
   },
   {

@@ -1,6 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
-import { MessageCircle, Phone } from 'lucide-react'
+import { Phone } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { WHATSAPP_URL, BUSINESS_PHONE, PHONE_TEL_HREF } from '@/lib/constants'
 
 export default function WhatsAppBanner() {
@@ -17,7 +18,7 @@ export default function WhatsAppBanner() {
         >
           <div className="flex items-center gap-5">
             <div className="w-16 h-16 rounded-full bg-brand-whatsapp/25 flex items-center justify-center flex-shrink-0">
-              <MessageCircle size={32} className="text-white" aria-hidden="true" />
+              <WhatsAppIcon size={32} className="text-white" />
             </div>
             <div>
               <h2 className="text-white font-serif font-bold text-2xl mb-1">
@@ -36,7 +37,7 @@ export default function WhatsAppBanner() {
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-white text-brand-whatsapp-dark font-bold px-7 min-h-12 rounded-xl hover:bg-green-50 transition-colors duration-200 text-base no-underline"
             >
-              <MessageCircle size={18} aria-hidden="true" />
+              <WhatsAppIcon size={18} />
               Chat on WhatsApp
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>

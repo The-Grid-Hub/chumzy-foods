@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react'
+import { Phone, Mail, MapPin } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import {
   BUSINESS_EMAIL,
   BUSINESS_PHONE,
@@ -90,7 +91,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 bg-brand-amber-cta hover:bg-brand-amber-cta-dark text-white text-sm font-semibold px-5 min-h-11 rounded-lg transition-colors duration-200 no-underline"
             >
-              <MessageCircle size={15} aria-hidden="true" />
+              <WhatsAppIcon size={15} />
               Chat on WhatsApp
               <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>

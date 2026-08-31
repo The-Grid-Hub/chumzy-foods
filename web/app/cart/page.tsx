@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import { useCart } from '@/lib/cart-context'
 import { WHATSAPP_NUMBER } from '@/lib/constants'
 
@@ -154,10 +155,11 @@ export default function CartPage() {
               href={buildWhatsAppUrl(items)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full text-white font-semibold py-3.5 rounded-xl transition-colors"
-              style={{ background: '#25D366' }}
+              className="btn-whatsapp w-full no-underline"
             >
-              <span>📱</span> Order via WhatsApp
+              <WhatsAppIcon size={18} />
+              Order via WhatsApp
+              <span className="sr-only">(opens WhatsApp in a new tab)</span>
             </a>
 
             <div className="card p-6">
@@ -174,7 +176,11 @@ export default function CartPage() {
                   <option value="stripe">Card (Stripe)</option>
                   <option value="paypal">PayPal</option>
                 </select>
-                <button type="submit" className="btn-green w-full py-3.5">
+                <button
+                  type="submit"
+                  className="btn-green w-full py-3.5 inline-flex items-center justify-center gap-2"
+                >
+                  <WhatsAppIcon size={18} />
                   Order via WhatsApp
                 </button>
               </form>

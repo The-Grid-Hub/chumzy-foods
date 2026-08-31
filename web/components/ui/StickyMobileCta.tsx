@@ -1,5 +1,6 @@
 'use client'
-import { MessageCircle, ShoppingCart } from 'lucide-react'
+import { ShoppingCart } from 'lucide-react'
+import WhatsAppIcon from '@/components/ui/WhatsAppIcon'
 import Link from 'next/link'
 import { WHATSAPP_URL } from '@/lib/constants'
 import { useCart } from '@/lib/cart-context'
@@ -23,7 +24,7 @@ export default function StickyMobileCta() {
         rel="noopener noreferrer"
         className="btn-whatsapp flex-1 min-h-11 text-sm"
       >
-        <MessageCircle size={18} aria-hidden="true" />
+        <WhatsAppIcon size={18} />
         Order on WhatsApp
         <span className="sr-only">(opens WhatsApp in a new tab)</span>
       </a>
